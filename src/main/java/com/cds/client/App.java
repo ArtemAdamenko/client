@@ -29,6 +29,7 @@ public class App
     
     /*
      * Формирование заголовка пакета МБ 10 байт
+     *@return byte[]
      */
     private static byte[] getHeader(){
         ByteBuffer b = ByteBuffer.allocate(10);
@@ -38,7 +39,7 @@ public class App
         b.putShort(service_id);
         short type = GranitV6.Constants.NPH_SND_REALTIME;
         b.putShort(type);
-        short flag = GranitV6.Constants.NPH_FLAG_REQUEST;
+        short flag = 0;
         b.putShort(flag);
         // уникальный идентификатор пакета в пределах 1-й сессии
         int request = request_id++;
@@ -50,8 +51,9 @@ public class App
     
     /*
      * данные пакета 26 байт + 10 байт
+     *@return byte[]
      */
-    private static byte[] getPacketData(){
+    private static byte[] getPacketData(){   
         ByteBuffer b = ByteBuffer.allocate(38);
         
         byte[] header = getHeader();
@@ -72,7 +74,7 @@ public class App
         int latitude = 39 * 10000000;
         b.putInt(latitude);
         //дополнительная информация (SOS и т.п.)
-        byte extra_dop = 0b11111000;
+        byte extra_dop = 0b00000111;
         b.put(extra_dop);
         //напряжение батареи
         byte bat_voltage = 1;
@@ -101,5 +103,41 @@ public class App
         
         byte[] packet = b.array();
         return packet;
+    }
+    
+    /*
+    Запрос на установку соединения 24 байта
+    *@return byte[]
+    */
+    private static byte[] connRequest(){
+        ByteBuffer b = ByteBuffer.allocate(24);
+        //заголовок
+        short service_id = GranitV6.Constants.NPH_SRV_GENERIC_CONTROLS;
+        b.putShort(service_id);
+        short type = GranitV6.Constants.NPH_SGC_CONN_REQUEST;
+        b.putShort(type);
+        short flag = 0;
+        b.putShort(flag);
+        int request = request_id++;
+        b.putInt(request);
+        
+        //пакет запроса соединения
+        //версия протокола
+        short proto_version_high = 6;
+        b.putShort(proto_version_high);
+        short proto_version_low = 2;
+        b.putShort(proto_version_low);
+        //параметры подключения
+        short connection_flags = 0b0000;
+        b.putShort(connection_flags);
+        //адрес МБ
+        int peer_address = 11111;
+        b.putInt(peer_address);
+        //макс.пакет который может обработать МБ
+        int max_packet_size = 20;
+        b.putInt(max_packet_size);
+        
+        byte[] conn = b.array();
+        return conn;
     }
 }

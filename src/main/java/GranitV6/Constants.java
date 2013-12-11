@@ -71,7 +71,7 @@ Navigation data transfer protocol (NDTP)
     final static int NPH_PACKET_MAX_DATA_SIZE = (NPH_PACKET_MAX_SIZE - NPH_PACKET_HEADER_SIZE);
 
     /*NPH service types*/
-    final static int NPH_SRV_GENERIC_CONTROLS = 0;
+    public final static int NPH_SRV_GENERIC_CONTROLS = 0;
     public final static int NPH_SRV_NAVDATA = 1;
     final static int NPH_SRV_FILE_TRANSFER = 3;
     final static int NPH_SRV_CLIENT_LIST = 4;
@@ -86,7 +86,7 @@ Navigation data transfer protocol (NDTP)
 
     /*NPH_SRV_GENERIC_CONTROLS packets*/
     final static int NPH_SGC_RESULT = 0;                          //NPH_RESULT
-    final static int NPH_SGC_CONN_REQUEST = 100;
+    public final static int NPH_SGC_CONN_REQUEST = 100;
     final static int NPH_SGC_CONN_AUTH_STRING = 101;
     final static int NPH_SGC_SERVICE_REQUEST = 110;
     final static int NPH_SGC_SERVICES_REQUEST = 111;
